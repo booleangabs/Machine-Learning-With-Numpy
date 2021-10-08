@@ -1,18 +1,8 @@
 import numpy as np
 from losses import MSE
-
-class Regression:
-    def __init__(self):
-        pass
-    
-    def fit(self):
-        raise NotImplementedError()
-    
-    def predict(self):
-        raise NotImplementedError()
+from utils import Algorithm
         
-        
-class SimpleLinearRegression(Regression):
+class SimpleLinearRegression(Algorithm):
     def __init__(self, mode: str):
         assert mode in ('Gradient Descent', 'Pseudo Inverse')
         self.mode = mode
@@ -50,4 +40,3 @@ class SimpleLinearRegression(Regression):
         else:
             prediction = (self.w * X).sum(axis=1)
         return prediction
-            
