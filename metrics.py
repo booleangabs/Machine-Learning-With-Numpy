@@ -1,17 +1,21 @@
 import numpy as np
 
-def accurary(y_true: np.array, y_pred: np.array):
+def accuracy(y_true: np.array, y_pred: np.array):
     correct = (y_true == y_pred).sum()
     return np.round(correct / len(y_true), 4)
 
 def recall(y_true: np.array, y_pred: np.array):
-    pass
+    fn = FN(y_true, y_pred)
+    tp = TP(y_true, y_pred)
+    return tp / (tp + fn)
 
 def precision(y_true: np.array, y_pred: np.array):
-    pass
+    tp = TP(y_true, y_pred)
+    fp = FP(y_true, y_pred)
+    return tp / (tp + fp)
 
 def f1Score(y_true: np.array, y_pred: np.array):
-    pass
+    return 2 / ((1 / precision(y_true, y_pred)) + (1 / recall(y_true, y_pred)))
 
 def confusionMatrix(y_true: np.array, y_pred: np.array):
     pass
