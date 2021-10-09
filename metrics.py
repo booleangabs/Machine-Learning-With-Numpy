@@ -18,3 +18,15 @@ def confusionMatrix(y_true: np.array, y_pred: np.array):
 
 def plotConfusionMatrix(y_true: np.array, y_pred: np.array):
     pass
+
+def TP(y_true: np.array, y_pred: np.array) -> int:
+    return np.bitwise_and(y_true == 1, y_pred == 1).sum()
+
+def TN(y_true: np.array, y_pred: np.array) -> int:
+    return np.bitwise_and(y_true == 0, y_pred == 0).sum()
+
+def FP(y_true: np.array, y_pred: np.array) -> int:
+    return np.bitwise_and(y_true == 0, y_pred == 1).sum()
+
+def FN(y_true: np.array, y_pred: np.array) -> int:
+    return np.bitwise_and(y_true == 1, y_pred == 0).sum()
