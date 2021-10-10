@@ -2,13 +2,13 @@ import numpy as np
 from losses import MSE
 from utils import Algorithm
         
-class SimpleLinearRegression(Algorithm):
+class LinearRegression(Algorithm):
     def __init__(self, mode: str):
-        assert mode in ('Gradient Descent', 'Pseudo Inverse')
+        assert mode in ('Simple', 'Multinomial')
         self.mode = mode
         
     def fit(self, X_train: np.array, y_train: np.array, alpha=None, max_iter=1000, patience=5):
-        if self.mode == "Gradient Descent":
+        if self.mode == "Simple":
             assert (alpha != 0) & (0 < alpha)
             self.history = {}
             self.w0, self.w1 = np.random.randn(2)
@@ -35,7 +35,7 @@ class SimpleLinearRegression(Algorithm):
             self.w = moore_penrose @ y_train
             
     def predict(self, X: np.array) -> np.array:
-        if self.mode == "Gradient Descent":
+        if self.mode == "Simple":
             prediction = self.w0*X.flatten() + self.w1
         else:
             prediction = (self.w * X).sum(axis=1)
