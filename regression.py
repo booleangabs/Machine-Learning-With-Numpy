@@ -1,6 +1,12 @@
+# Native
+
+# Site-packages
 import numpy as np
+
+# Locals
 from losses import MSE
 from utils import Algorithm
+
         
 class LinearRegression(Algorithm):
     def __init__(self, mode: str):

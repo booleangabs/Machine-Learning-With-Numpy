@@ -1,6 +1,13 @@
+# Native
+
+# Site-packages
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
+
+# Locals
+
+
 sns.set()
 
 def accuracy(y_true: np.array, y_pred: np.array):

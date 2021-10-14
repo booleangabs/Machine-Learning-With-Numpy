@@ -1,4 +1,9 @@
+# Native
+
+# Site-packages
 import numpy as np
+
+# Locals
 from utils import Algorithm
 
 class KNN(Algorithm):
