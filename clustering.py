@@ -12,6 +12,7 @@ class KMeans:
         self.inertia = float('inf')
         
     def fit(self, X: np.array, iterations: int=1000):
+        self.X = X
         self.labels = np.zeros((X.shape[0],)) - 1
         self.__initCentroids(X, self.n_clusters)
         
@@ -31,7 +32,9 @@ class KMeans:
             last = self.labels
     
     def predict(self, X_new: np.array, n_neighbours: int=3):
-        pass
+        classifier = KNN(n_neighbours)
+        classifier.fit(self.X, self.labels)
+        return classifier.predict(X_new)
     
     def __initCentroids(self, X: np.array, k: int):
         centroids = np.array([])
