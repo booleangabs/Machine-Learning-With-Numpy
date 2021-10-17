@@ -14,3 +14,22 @@ class Algorithm:
     
     def predict(self):
         raise NotImplementedError()
+        
+class Activation:
+    def __init__(self):
+        pass
+    
+    def __call__(self):
+        raise NotImplementedError()
+    
+    def grad(self):
+        raise NotImplementedError()
+        
+class Sigmoid(Activation):
+    def __init__(self):
+        pass
+    
+
+class Relu(Activation):
+    def __init__(self):
+        pass

@@ -5,8 +5,9 @@ import numpy as np
 
 # Locals
 from classification import KNN
+from utils import Algorithm
 
-class KMeans:
+class KMeans(Algorithm):
     def __init__(self, n_clusters: int):
         self.n_clusters = n_clusters
         self.inertia = float('inf')

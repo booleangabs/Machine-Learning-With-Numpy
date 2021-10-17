@@ -10,12 +10,12 @@ from utils import Algorithm
         
 class LinearRegression(Algorithm):
     def __init__(self, mode: str):
-        assert mode in ('Simple', 'Multinomial')
+        assert mode in ('Simple', 'Multivariate')
         self.mode = mode
         
-    def fit(self, X_train: np.array, y_train: np.array, alpha=None, max_iter=1000, patience=5):
+    def fit(self, X_train: np.array, y_train: np.array, alpha=1e-3, max_iter=1000, patience=5):
         if self.mode == "Simple":
-            assert (alpha != 0) & (0 < alpha)
+            assert (0 < alpha <= 1)
             self.history = {}
             self.w0, self.w1 = np.random.randn(2)
             current_pred = np.zeros_like(y_train)

@@ -6,6 +6,7 @@ import numpy as np
 # Locals
 from utils import Algorithm
 
+
 class KNN(Algorithm):
     def __init__(self, k: int=3):
         self.k = k
