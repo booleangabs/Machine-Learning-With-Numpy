@@ -25,7 +25,7 @@ class KNN(Algorithm):
             idx = counts.tolist().index(counts.max())
             mode = values[idx]
             preds.append(mode)
-        return preds
+        return np.array(preds)
         
     def __computeDist(self, d: np.array, X: np.array):
         def dist(x, y):
