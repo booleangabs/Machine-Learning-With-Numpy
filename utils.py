@@ -26,8 +26,17 @@ class Activation:
         raise NotImplementedError()
         
 class Sigmoid(Activation):
-    def __init__(self):
-        pass
+    def __init__(self, grad: bool=False):
+        self.grad = grad
+    
+    def __call__(self, z):
+        return self.__sigmoid(z) if self.grad else self.__grad(z)
+    
+    def __sigmoid(self, z):
+        return np.round(1 / (1 + np.exp(z)), 5)
+    
+    def __grad(self, z):
+        return self.__sigmoid(z) * (1 - self.__sigmoid(z))
     
 
 class Relu(Activation):
