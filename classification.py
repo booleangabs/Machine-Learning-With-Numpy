@@ -5,7 +5,7 @@ import numpy as np
 
 # Locals
 from utils import Algorithm
-from losses import logloss
+from losses import logLoss
 
 
 class KNN(Algorithm):
@@ -47,7 +47,7 @@ class LogisticRegression(Algorithm):
         self.b, self.W = 0, np.random.uniform((1 / -n_inputs), 1 / n_inputs, (n_inputs,))
         current_pred = np.zeros_like(y_train)
         for i in range(epochs):
-            z = X_train.dot(self.W) + self.b
+            z = (X_train.dot(self.W) + self.b)
             current_pred = self._sigmoid(z)
             diff = -(y_train - current_pred)
             dW = -(diff.dot(X_train))
@@ -55,8 +55,8 @@ class LogisticRegression(Algorithm):
             self.W -= alpha * dW
             self.b -= alpha * db
             
-            self.history[i] = logloss(y_train, current_pred)
-            
+            self.history[i] = logLoss(y_train, current_pred)
+        
     def predict(self, X: np.array) -> np.array:
         prediction = self._sigmoid(X.dot(self.W) + self.b)
         return prediction
