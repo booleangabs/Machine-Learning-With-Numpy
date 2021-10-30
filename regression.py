@@ -20,4 +20,4 @@ class LinearRegression(Algorithm):
             
     def predict(self, X: np.array) -> np.array:
         X = np.hstack((X, np.ones((X.shape[0], 1))))
-        return X.dot(self.W) + self.b if self.mode == 0 else X.dot(self.W)
+        return X.dot(self.W)
