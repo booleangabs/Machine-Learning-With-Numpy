@@ -72,5 +72,11 @@ class CategoricalEncoder:
             result[i][self.unique.index(x)] = 1
         return result
                     
-                    
-        
+def textToCategorical(X: np.array) -> np.array:
+    return np.argmax(CategoricalEncoder(0).encode(X), axis=1), np.unique(X)
+
+def categoricalToText(X: np.array, unique: np.array) -> np.array:
+    result = []
+    for x in X:
+        result.append(unique[x])
+    return np.array(result)
