@@ -14,3 +14,7 @@ class Algorithm:
     
     def predict(self):
         raise NotImplementedError()
+        
+def initializeWeights(n_inputs, n_outputs):
+    abs_n = 1 / n_inputs
+    return np.random.uniform(-abs_n, abs_n, (n_inputs, n_outputs))
