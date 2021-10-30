@@ -5,6 +5,10 @@ class Constants:
     PPR_SCALE_MINMAX = 0
     PPR_SCALE_STD = 1
     
+    # Encoding (enc)
+    ENC_CAT2ONEHOT = 0
+    ENC_ONEHOT2CAT = 1
+    
 class Algorithm:
     def __init__(self):
         pass

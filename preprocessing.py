@@ -9,7 +9,20 @@ import numpy as np
 from utils import Constants as cts
 
 
-class StandardScaler:
+class Preprocessing:
+    def __init__(self):
+        pass
+        
+    def fit(self):
+        raise NotImplementedError()
+        
+    def transform(self, X: np.array) -> np.array:
+        raise NotImplementedError()
+
+    def fit_transform(self, X: np.array) -> np.array:
+        raise NotImplementedError()
+
+class StandardScaler(Preprocessing):
     def __init__(self, mode: int):
         assert mode in (0, 1), f"{mode} is not a valid value for mode."
         self.mode = mode
@@ -35,4 +48,29 @@ class StandardScaler:
         self.fit(X)
         return self.transform(X)
 
-class min
+class CategoricalEncoder:
+    def __init__(self, mode: int):
+        assert mode in (0, 1), f"{mode} is not a valid value for mode."
+        self.mode = mode
+    
+    def encode(self, X: np.array) -> np.array:
+        if self.mode == cts.ENC_CAT2ONEHOT:
+            self.unique = np.unique(X)
+            unique_list = self.unique.tolist()
+            result = np.zeros((len(X), len(self.unique)))
+            for i, x in enumerate(X):
+                result[i][unique_list.index(x)] = 1
+            return result
+        return np.argmax(X, axis=1)
+    
+    def reverse_encode(self, X: np.array):
+        if self.mode == cts.ENC_CAT2ONEHOT:
+            return np.argmax(X, axis=1)
+        self.unique = list(np.unique(X))
+        result = np.zeros((len(X), len(self.unique)))
+        for i, x in enumerate(X):
+            result[i][self.unique.index(x)] = 1
+        return result
+                    
+                    
+        
