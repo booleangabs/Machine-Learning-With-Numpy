@@ -45,7 +45,9 @@ def roc(y_true: np.ndarray, probabilities: np.ndarray, n_thresholds: float) -> t
 def plotROC(tpr: np.ndarray, fpr: np.ndarray, n_thresholds: int):
     figure = plt.figure()
     axis = figure.add_subplot()
-    axis.set_title(f"ROC - AUC = {AUCROC(tpr, fpr, n_thresholds)}")
+    axis.set_ylim([0 - 1e-1, 1 + 1e-1])
+    axis.set_xlim([0 - 1e-1, 1 + 1e-1])
+    axis.set_title(f"ROC - AUC = {AUCROC(tpr, fpr, tpr.shape[0] - 1)}")
     plt.scatter(fpr, tpr)
     plt.show()
 
@@ -53,7 +55,7 @@ def AUCROC(tpr: np.ndarray, fpr: np.ndarray, n_thresholds: int) -> float:
     sum_ = 0
     for i in range(n_thresholds):
         sum_ += (fpr[i] - fpr[i + 1]) * tpr[i]
-    return np.round(sum_, 3)
+    return np.round(sum_, 5)
 
 def confusionMatrix(y_true: np.ndarray, y_pred: np.ndarray, normalize: bool=False) -> np.ndarray:
     n_classes = len(np.unique(y_true))
@@ -66,7 +68,7 @@ def confusionMatrix(y_true: np.ndarray, y_pred: np.ndarray, normalize: bool=Fals
     return cm
 
 def plotConfusionMatrix(y_true: np.ndarray, y_pred: np.ndarray):
-    sns.heatmap(confusionMatrix(y_true, y_pred), annot=True)
+    sns.heatmap(confusionMatrix(y_true, y_pred), annot=True, fmt='d')
 
 def TP(y_true: np.ndarray, y_pred: np.ndarray) -> int:
     return np.bitwise_and(y_true == 1, y_pred == 1).sum()

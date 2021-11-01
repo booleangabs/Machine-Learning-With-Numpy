@@ -33,7 +33,7 @@ class KNN(Algorithm):
             return np.sqrt((x - y).T.dot(x - y))
         return np.float32([dist(d, i) for i in X])
     
-class LogisticRegression(Algorithm):
+class BinaryLogisticRegression(Algorithm):
     def __init__(self, alpha: float=1e-3, epochs: int=100):
         self.alpha = alpha
         self.epochs = epochs
@@ -54,6 +54,9 @@ class LogisticRegression(Algorithm):
             
             self.history[i] = logLoss(y_train, current_pred)
         
-    def predict(self, X: np.array) -> np.array:
+    def predict_proba(self, X: np.array) -> np.array:
         X = np.hstack((X, np.ones((X.shape[0], 1))))
         return self._sigmoid(X.dot(self.W)).flatten()
+    
+    def predict(self, X: np.array, threshold: float=0.5) -> np.array:
+        return (self.predict_proba(X) > threshold).astype('int32')
