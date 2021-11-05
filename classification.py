@@ -6,6 +6,7 @@ import numpy as np
 # Locals
 from utils import Algorithm, initializeWeights
 from losses import logLoss
+from activations import Activation, Sigmoid
 
 
 class KNN(Algorithm):
@@ -60,3 +61,32 @@ class BinaryLogisticRegression(Algorithm):
     
     def predict(self, X: np.array, threshold: float=0.5) -> np.array:
         return (self.predict_proba(X) > threshold).astype('int32')
+    
+class MulticlassLogisticRegression(Algorithm):
+    pass
+
+class SVM(Algorithm):
+    pass
+
+class SingleLayerPerceptron(Algorithm):
+    def __init__(self, activation: Activation=Sigmoid, alpha: float=1e-5, epochs: int=100):
+        self.alpha = alpha
+        self.epochs = epochs
+        self.activation = activation()
+        
+    def fit(self, X_train: np.array, y_train: np.array):
+        X_train = np.hstack((X_train, np.ones((X_train.shape[0], 1))))
+        self.history = {}
+        n_rows, n_columns = X_train.shape
+        self.W = np.random.uniform((1 / -n_columns), 1 / n_columns, (n_columns,))
+        for i in range(self.epochs):
+            current_pred = self.activation(X_train.dot(self.W))
+            diff = (current_pred - y_train)
+            dW = X_train.T.dot(diff * self.activation.grad(current_pred))
+            self.W -= self.alpha * dW
+            
+            self.history[i] = (1 / 2) * (diff**2).sum()
+        
+    def predict(self, X: np.array) -> np.array:
+        X = np.hstack((X, np.ones((X.shape[0], 1))))
+        return self.activation(X.dot(self.W)) 
