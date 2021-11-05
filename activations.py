@@ -7,31 +7,27 @@ import numpy as np
 
 
 class Activation:
-    def __init__(self, grad: bool=False):
-        self.grad = grad
-        
-    def __call__(self, x):
-        return self.__grad(x) if self.grad else self.__call(x)
-    
-    def __call(self):
+    def __init__(self):
         pass
+        
+    def __call__(self):
+        raise NotImplementedError()
     
-    def __grad(self):
+    def grad(self):
         raise NotImplementedError()
         
-class Sigmoid(Activation):    
-    def __call(self, z):
+class Sigmoid(Activation):
+    def __call__(self, z):
         return np.round(1 / (1 + np.exp(-z)), 5)
     
-    def __grad(self, z):
-        return self.__sigmoid(z) * (1 - self.__sigmoid(z))
+    def grad(self, z):
+        return self(z) * (1 - self(z))
     
-
-class Relu(Activation):
-    def __call(self, x):
+class ReLU(Activation):
+    def __call__(self, x):
         return np.clip(x, 0, float('inf'))
     
-    def __grad(self, x):
+    def grad(self, x):
         grad = np.zeros_like(x)
         grad[x > 0] = 1
         return grad
