@@ -23,9 +23,11 @@ class LinearRegression(Algorithm):
         return X.dot(self.W)
 
 class GradientDescentRegression(Algorithm):
-    def __init__(self, alpha: float=1e-5, epochs: int=100):
+    def __init__(self, alpha: float=1e-5, epochs: int=100, regularization=None):
         self.alpha = alpha
         self.epochs = epochs
+        f = lambda x: x
+        self.regularization = f if regularization == None else regularization
         
     def fit(self, X_train: np.array, y_train: np.array):
         X_train = np.hstack((X_train, np.ones((X_train.shape[0], 1))))
@@ -43,3 +45,5 @@ class GradientDescentRegression(Algorithm):
     def predict(self, X: np.array) -> np.array:
         X = np.hstack((X, np.ones((X.shape[0], 1))))
         return X.dot(self.W)
+    
+class 
