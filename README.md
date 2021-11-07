@@ -5,14 +5,14 @@ Implementing machine learning algorithms with Numpy and Pandas \
 - Supervised Learning
   * K Nearest Neighbours (ok)
   * Linear Regression (ok)
-  * Logistic Regression (todo)
+  * Logistic Regression (ok)
   * Lasso Regression (todo)
   * Ridge Regression (todo)
   * Elastic Net (todo)
   * Support Vector Machine (todo)
   * Naive Bayes (todo)
   * Decision tree (todo)
-  * Perceptron (todo)
+  * Perceptron (ok)
   * Neural Network (todo)
   * Convolutional Neural Network (todo)
   * Recurrent Neural Network (todo)
@@ -20,10 +20,11 @@ Implementing machine learning algorithms with Numpy and Pandas \
 - Unupervised Learning
   * K-Means with k-means++ initialization (ok)
   * Principal Component Analysis (ok)
-  * Hierarchical clustering
-  * Liner Discriminant Analysis
+  * Hierarchical clustering (todo)
+  * Liner Discriminant Analysis (todo)
+
  - Reinforcement Learning
-  * Q-Learning (todo)
+   * Q-Learning (todo)
 
 **Others**
 - Preprocessing
