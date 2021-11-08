@@ -47,6 +47,7 @@ class GradientDescentRegression(Algorithm):
 class LassoRegression(Algorithm):
     def __init__(self, alpha: float=1e-5, lambda_: float=5e-2, epochs: int=100):
         self.alpha = alpha
+        self.lambda_ = lambda_
         self.epochs = epochs
         
     def fit(self, X_train: np.array, y_train: np.array):
@@ -57,11 +58,35 @@ class LassoRegression(Algorithm):
         for i in range(self.epochs):
             current_pred = X_train.dot(self.W)
             diff = (current_pred - y_train)
-            dW = X_train.T.dot(diff) * (2 / n_rows) + np.sign(self.W)
+            dW = X_train.T.dot(diff) * (2 / n_rows) + self.lambda_ * np.sign(self.W)
             self.W -= self.alpha * dW
             
             W_norm = np.linalg.norm(self.W)
-            self.history[i] = ((y_train - current_pred)**2 + W_norm).mean()
+            self.history[i] = ((y_train - current_pred)**2 + self.lambda_ * W_norm).mean()
+        
+    def predict(self, X: np.array) -> np.array:
+        X = np.hstack((X, np.ones((X.shape[0], 1))))
+        return X.dot(self.W)
+    
+class RidgeRegression(Algorithm):
+    def __init__(self, alpha: float=1e-5, omega_: float=5e-2, epochs: int=100):
+        self.alpha = alpha
+        self.omega_ = omega_
+        self.epochs = epochs
+        
+    def fit(self, X_train: np.array, y_train: np.array):
+        X_train = np.hstack((X_train, np.ones((X_train.shape[0], 1))))
+        self.history = {}
+        n_rows, n_columns = X_train.shape
+        self.W = np.random.uniform((1 / -n_columns), 1 / n_columns, (n_columns,))
+        for i in range(self.epochs):
+            current_pred = X_train.dot(self.W)
+            diff = (current_pred - y_train)
+            dW = X_train.T.dot(diff) * (2 / n_rows) + 2 * self.omega_ * self.W
+            self.W -= self.alpha * dW
+            
+            W_norm_sq = np.linalg.norm(self.W) ** 2
+            self.history[i] = ((y_train - current_pred)**2 + self.omega_ * W_norm_sq).mean()
         
     def predict(self, X: np.array) -> np.array:
         X = np.hstack((X, np.ones((X.shape[0], 1))))
