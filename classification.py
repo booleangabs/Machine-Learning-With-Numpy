@@ -4,9 +4,10 @@
 import numpy as np
 
 # Locals
-from utils import Algorithm, initializeWeights
-from losses import logLoss
+from utils import Algorithm, initializeWeights, Constants
+from losses import logLoss, hingeLoss
 from activations import Activation, Sigmoid
+from preprocessing import Scaler
 
 
 class KNN(Algorithm):
@@ -65,10 +66,42 @@ class BinaryLogisticRegression(Algorithm):
 class MulticlassLogisticRegression(Algorithm):
     pass
 
-class SVM(Algorithm):
-    pass
+class BinarySVM(Algorithm):
+    def __init__(self, C: float=1, alpha: float=1e-5, epochs: int=100):
+        self.alpha = alpha
+        self.epochs = epochs
+        self.C = C
+        self.scaler = Scaler(Constants.PPR_SCALE_MINMAX)
+        
+    def fit(self, X_train: np.array, y_train_: np.array):
+        X_train = np.hstack((X_train, np.ones((X_train.shape[0], 1))))
+        y_train = self.scaler.fit_transform(y_train_)
+        y_train = y_train * 2 - 1
+        self.history = {}
+        n_rows, n_columns = X_train.shape
+        self.W = np.random.uniform((1 / -n_columns), 1 / n_columns, (n_columns,))
+        for i in range(self.epochs):
+            current_pred = X_train.dot(self.W)
+            prod = y_train * current_pred
+            dW_ = -y_train.reshape(-1, 1) * X_train
+            dW_[prod >= 1] = 0
+            dW = self.W + self.C * dW_.sum(0)
+            self.W -= self.alpha * dW
+            
+            self.history[i] = hingeLoss(y_train, current_pred)
+            
+    def predict_proba(self, X: np.array) -> np.array:
+        X = np.hstack((X, np.ones((X.shape[0], 1))))
+        return self.scaler.fit_transform(X.dot(self.W))
+        
+    def predict(self, X: np.array) -> np.array:
+        probabilities = self.predict_proba(X)
+        y_pred = np.ones_like(probabilities)
+        y_pred[probabilities <= 0.5] = -1
+        return y_pred
 
 class SingleLayerPerceptron(Algorithm):
+    
     def __init__(self, activation: Activation=Sigmoid, alpha: float=1e-5, epochs: int=100):
         self.alpha = alpha
         self.epochs = epochs
