@@ -36,8 +36,8 @@ class KNN(Algorithm):
         return np.float32([dist(d, i) for i in X])
     
 class BinaryLogisticRegression(Algorithm):
-    def __init__(self, alpha: float=1e-3, epochs: int=100):
-        self.alpha = alpha
+    def __init__(self, lr: float=1e-3, epochs: int=100):
+        self.lr = lr
         self.epochs = epochs
     
     def _sigmoid(self, z):
@@ -52,7 +52,7 @@ class BinaryLogisticRegression(Algorithm):
             current_pred = self._sigmoid(X_train.dot(self.W)).flatten()
             diff = (y_train - current_pred)
             dW = X_train.T.dot(diff) * (1 / n_rows)
-            self.W += self.alpha * dW.reshape(-1, 1)
+            self.W += self.lr * dW.reshape(-1, 1)
             
             self.history[i] = logLoss(y_train, current_pred)
         
@@ -67,8 +67,8 @@ class MulticlassLogisticRegression(Algorithm):
     pass
 
 class BinarySVM(Algorithm):
-    def __init__(self, C: float=1, alpha: float=1e-5, epochs: int=100):
-        self.alpha = alpha
+    def __init__(self, C: float=1, lr: float=1e-5, epochs: int=100):
+        self.lr = lr
         self.epochs = epochs
         self.C = C
         self.scaler = Scaler(Constants.PPR_SCALE_MINMAX)
@@ -86,7 +86,7 @@ class BinarySVM(Algorithm):
             dW_ = -y_train.reshape(-1, 1) * X_train
             dW_[prod >= 1] = 0
             dW = self.W + self.C * dW_.sum(0)
-            self.W -= self.alpha * dW
+            self.W -= self.lr * dW
             
             self.history[i] = hingeLoss(y_train, current_pred)
             
@@ -102,8 +102,8 @@ class BinarySVM(Algorithm):
 
 class SingleLayerPerceptron(Algorithm):
     
-    def __init__(self, activation: Activation=Sigmoid, alpha: float=1e-5, epochs: int=100):
-        self.alpha = alpha
+    def __init__(self, activation: Activation=Sigmoid, lr: float=1e-5, epochs: int=100):
+        self.lr = lr
         self.epochs = epochs
         self.activation = activation()
         
@@ -116,7 +116,7 @@ class SingleLayerPerceptron(Algorithm):
             current_pred = self.activation(X_train.dot(self.W))
             diff = (current_pred - y_train)
             dW = X_train.T.dot(diff * self.activation.grad(current_pred))
-            self.W -= self.alpha * dW
+            self.W -= self.lr * dW
             
             self.history[i] = (1 / 2) * (diff**2).sum()
         
