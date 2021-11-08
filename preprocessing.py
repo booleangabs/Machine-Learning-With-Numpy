@@ -22,7 +22,7 @@ class Preprocessing:
     def fit_transform(self, X: np.array) -> np.array:
         raise NotImplementedError()
 
-class StandardScaler(Preprocessing):
+class Scaler(Preprocessing):
     def __init__(self, mode: int):
         assert mode in (0, 1), f"{mode} is not a valid value for mode."
         self.mode = mode
