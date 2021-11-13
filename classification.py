@@ -94,10 +94,10 @@ class BinarySVM(Algorithm):
         X = np.hstack((X, np.ones((X.shape[0], 1))))
         return self.scaler.fit_transform(X.dot(self.W))
         
-    def predict(self, X: np.array) -> np.array:
+    def predict(self, X: np.array, threshold: float=0.5) -> np.array:
         probabilities = self.predict_proba(X)
-        y_pred = np.ones_like(probabilities)
-        y_pred[probabilities <= 0.5] = -1
+        y_pred = -np.ones_like(probabilities)
+        y_pred[probabilities > threshold] = 1
         return y_pred
 
 class SingleLayerPerceptron(Algorithm):
