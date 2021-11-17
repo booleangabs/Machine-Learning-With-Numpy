@@ -13,6 +13,7 @@ Implementing machine learning algorithms with Numpy and Pandas \
   * Naive Bayes (todo)
   * Decision tree (todo)
   * Perceptron (ok)
+  * One Vs All Classification using BinaryClassifier (ok)
   * Neural Network (todo)
   * Convolutional Neural Network (todo)
   * Recurrent Neural Network (todo)
@@ -21,7 +22,7 @@ Implementing machine learning algorithms with Numpy and Pandas \
   * K-Means with k-means++ initialization (ok)
   * Principal Component Analysis (ok)
   * Hierarchical clustering (todo)
-  * Liner Discriminant Analysis (todo)
+  * Linear Discriminant Analysis (todo)
 
  - Reinforcement Learning
    * Q-Learning (todo)
