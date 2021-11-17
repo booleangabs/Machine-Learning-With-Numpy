@@ -48,7 +48,7 @@ class Scaler(Preprocessing):
         self.fit(X)
         return self.transform(X)
 
-class CategoricalEncoder:
+class CategoricalEncoder(Preprocessing):
     def __init__(self, mode: int):
         assert mode in (0, 1), f"{mode} is not a valid value for mode."
         self.mode = mode

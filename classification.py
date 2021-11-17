@@ -7,8 +7,14 @@ import numpy as np
 from utils import Algorithm, initializeWeights, Constants
 from losses import logLoss, hingeLoss
 from activations import Activation, Sigmoid
-from preprocessing import Scaler
+from preprocessing import Scaler, CategoricalEncoder
 
+
+class BinaryClassifier:
+    '''
+    Dummy class for classifier that may be used for binary classification.
+    '''
+    pass
 
 class KNN(Algorithm):
     def __init__(self, k: int=3):
@@ -35,7 +41,7 @@ class KNN(Algorithm):
             return np.sqrt((x - y).T.dot(x - y))
         return np.float32([dist(d, i) for i in X])
     
-class BinaryLogisticRegression(Algorithm):
+class BinaryLogisticRegression(Algorithm, BinaryClassifier):
     def __init__(self, lr: float=1e-3, epochs: int=100):
         self.lr = lr
         self.epochs = epochs
@@ -66,7 +72,7 @@ class BinaryLogisticRegression(Algorithm):
 class MulticlassLogisticRegression(Algorithm):
     pass
 
-class BinarySVM(Algorithm):
+class BinarySVM(Algorithm, BinaryClassifier):
     def __init__(self, C: float=1, lr: float=1e-5, epochs: int=100):
         self.lr = lr
         self.epochs = epochs
@@ -100,8 +106,7 @@ class BinarySVM(Algorithm):
         y_pred[probabilities > threshold] = 1
         return y_pred
 
-class SingleLayerPerceptron(Algorithm):
-    
+class SingleLayerPerceptron(Algorithm, BinaryClassifier):
     def __init__(self, activation: Activation=Sigmoid, lr: float=1e-5, epochs: int=100):
         self.lr = lr
         self.epochs = epochs
@@ -120,6 +125,40 @@ class SingleLayerPerceptron(Algorithm):
             
             self.history[i] = (1 / 2) * (diff**2).sum()
         
-    def predict(self, X: np.array) -> np.array:
+    def predict_proba(self, X: np.array) -> np.array:
+        assert isinstance(self.activation, (Sigmoid))
         X = np.hstack((X, np.ones((X.shape[0], 1))))
-        return self.activation(X.dot(self.W)) 
+        return self.activation(X.dot(self.W))
+    
+    def predict(self, X: np.array, threshold: float=0.5) -> np.array:
+        return (self.predict_proba(X) > threshold).astype('int32')
+    
+class OneVsAllPipeline(Algorithm):
+    def __init__(self, classifierClass):
+        self.classifierClass = classifierClass
+        
+    def fit(self, X_train: np.array, y_train: np.array, **kwargs):
+        self.n_classes = y_train.shape[1]
+        self.models = []
+        for c in range(self.n_classes):
+            y = (np.argmax(y_train, 1) == c).astype('int32')
+            model = self.classifierClass(**kwargs)
+            model.fit(X_train, y)
+            self.models.append(model)
+            
+    def predict_proba(self, X: np.array) -> np.array:
+        probabilities = np.zeros((X.shape[0], self.n_classes))
+        for c in range(self.n_classes):
+            probabilities[:, c] = self.models[c].predict_proba(X)
+        return probabilities
+    
+    def predict(self, X: np.array):
+        probabilities = self.predict_proba(X)
+        argmax = np.argmax(probabilities, 1)
+        predictions = np.zeros_like(probabilities)
+        for i, j in enumerate(argmax):
+            predictions[i][j] = 1
+        return predictions
+        
+            
+    
