@@ -146,14 +146,14 @@ class OneVsAllPipeline(Algorithm):
             model.fit(X_train, y)
             self.models.append(model)
             
-    def predict_proba(self, X: np.array) -> np.array:
+    def getProbabilities(self, X: np.array) -> np.array:
         probabilities = np.zeros((X.shape[0], self.n_classes))
         for c in range(self.n_classes):
             probabilities[:, c] = self.models[c].predict_proba(X)
         return probabilities
     
     def predict(self, X: np.array):
-        probabilities = self.predict_proba(X)
+        probabilities = self.getProbabilities(X)
         argmax = np.argmax(probabilities, 1)
         predictions = np.zeros_like(probabilities)
         for i, j in enumerate(argmax):
