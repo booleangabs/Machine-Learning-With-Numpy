@@ -7,7 +7,7 @@ import numpy as np
 from utils import Algorithm, initializeWeights, Constants
 from losses import logLoss, hingeLoss
 from activations import Activation, Sigmoid
-from preprocessing import Scaler, CategoricalEncoder
+from preprocessing import Scaler
 
 
 class BinaryClassifier:
