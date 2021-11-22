@@ -8,7 +8,7 @@ Implementing machine learning algorithms with Numpy and Pandas \
   * Logistic Regression (ok)
   * Lasso Regression (ok)
   * Ridge Regression (ok)
-  * Elastic Net (todo)
+  * Elastic Net (ok)
   * Support Vector Machine (ok)
   * Naive Bayes (todo)
   * Decision tree (todo)
@@ -31,5 +31,6 @@ Implementing machine learning algorithms with Numpy and Pandas \
 - Preprocessing
 - Loss functions
 - Optimizers
+- Regularizers
 - Plotting and metrics
 
