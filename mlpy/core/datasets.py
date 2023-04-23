@@ -24,6 +24,7 @@ SOFTWARE.
 
 # site-packages
 import numpy as np
+from prettytable import PrettyTable
 
 # native
 import re
@@ -41,12 +42,11 @@ class Dataset:
         """
         self.data = self.__parse_csv(path)
      
-    def __repr__(self):
-        to_print = ", ".join(self.header) + "\n"
-        to_print_vals = list(zip(*[self.data[i] for i in self.header]))
-        for i in to_print_vals:
-            to_print += ", ".join([str(j) for j in i]) + "\n"
-        return to_print
+    def __str__(self) -> str:
+        table = PrettyTable()
+        for column in self.header:
+            table.add_column(column, self.data[column])
+        return table.get_string()
     
     def __getitem__(self, item):
          return self.data[item]
@@ -112,10 +112,12 @@ class Dataset:
         for substring in line:
             if bool(rfloat.match(substring)):
                 if substring.isdigit():
-                    substring = int(substring)
+                    value = int(substring)
                 else:
-                    substring = float(substring)
+                    value = float(substring)
             elif substring in ["True", "False"]:
-                substring = int(bool(substring))
-            line_parsed.append(substring)
+                value = int(eval(substring))
+            else:
+                value = substring
+            line_parsed.append(value)
         return line_parsed
