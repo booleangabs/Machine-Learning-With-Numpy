@@ -1,1 +1,1 @@
-from mlpy.core import datasets
+from mlpy import data
