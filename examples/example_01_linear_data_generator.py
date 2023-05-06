@@ -22,8 +22,21 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from mlpy import data
+import matplotlib.pyplot as plt
+from mlpy.data import data_generator
 
-__all__ = [
-    "data"
-]
+
+datagen = data_generator.LinearRegressionData(100, 1, 5)
+X, y = datagen.get_data()
+weights = datagen.get_weights()
+
+y_hat = (X @ weights).flatten()
+X = X[:, 1:].flatten()
+y = y.flatten()
+
+figure = plt.figure()
+plt.title("Linear data test")
+plt.scatter(X, y, c="b", s=15)
+plt.plot(X, y_hat, c="r", label="Ground Truth line")
+plt.legend()
+plt.show()

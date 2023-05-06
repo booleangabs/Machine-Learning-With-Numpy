@@ -26,8 +26,8 @@ SOFTWARE.
 import numpy as np
 
 
-class ParamMeta:
-    """Parameter Metadata
+class NormalParamMeta:
+    """Single normal distribution parameter metadata
     """
     def __init__(self, mean: float = 0, std: float = 1):
         """
@@ -40,7 +40,7 @@ class ParamMeta:
         self.std = std
 
 
-class LinearGenerator:
+class LinearRegressionData:
     """Data Generator for testing linear regressors
     
     First column is always a dummy variable (column of 1's)
@@ -51,7 +51,7 @@ class LinearGenerator:
                  noise_std: float = 1,
                  random_state: int = None,
                  val_range: list = [-25, 25],
-                 weight_meta: ParamMeta = ParamMeta(),
+                 weight_meta: NormalParamMeta = NormalParamMeta(),
                  use_bias: bool = True
                 ):
         """
@@ -74,19 +74,37 @@ class LinearGenerator:
         self.val_range = val_range
         self.weight_meta = weight_meta
         self.use_bias = use_bias
-        self.generator = np.random.default_rng(self.random_state)
-        self.__get()
         
-    def __get(self):
-        X_shape = (self.n_samples, self.n_features)
-        X = self.generator.uniform(*self.val_range, X_shape)
-        dummy = np.ones((self.n_samples, 1))
-        self.X = np.hstack([dummy, X])
-        self.W = self.generator.normal(
+        self.__generator = np.random.default_rng(self.random_state)
+        self.__generate()
+        
+    def __generate(self):
+        self.__W = self.__generator.normal(
                     self.weight_meta.mean, 
                     self.weight_meta.std,
                     (self.n_features + 1, 1)
                  )
-        self.W[0] *= self.use_bias
-        eps = self.generator.normal(0, self.noise_std, (self.n_samples, 1))
-        self.y = self.X @ self.W + eps
+        self.__W[0] *= self.use_bias
+        
+    def get_data(self) -> tuple[np.ndarray, np.ndarray]:
+        """Returns predictors matrix and targets vector (in this order)
+
+        Returns:
+            tuple[np.ndarray, np.ndarray]: Predictors matrix, target vector
+        """
+        X_shape = (self.n_samples, self.n_features)
+        X = self.__generator.uniform(*self.val_range, X_shape)
+        dummy = np.ones((self.n_samples, 1))
+        self.__X = np.hstack([dummy, X])
+        eps = self.__generator.normal(0, self.noise_std, (self.n_samples, 1))
+        self.__y = self.__X @ self.__W + eps
+        return self.__X, self.__y
+    
+    def get_weights(self) -> np.ndarray:
+        """Returns ground truth weights
+
+        Returns:
+            np.ndarray: Weights
+        """
+        return self.__W
+    
