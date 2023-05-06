@@ -5,6 +5,8 @@ Machine learning algorithms from scratch using numpy
 
 ### Features
 - Self-contained CSV dataset loader
+- Toy dataset generator
+    * For linear regression
 
 ### Setup
 [LINUX] To properly use the package, run the following commands:
