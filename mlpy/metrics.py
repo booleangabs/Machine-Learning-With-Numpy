@@ -22,12 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from mlpy import data
-from mlpy import regression
-from mlpy import metrics
+# site-packages
+import numpy as np
 
-__all__ = [
-    "data",
-    "regression",
-    "metrics"
-]
+
+def mse(y_true: np.ndarray, y_pred: np.ndarray) -> float:
+    return np.mean((y_true - y_pred)**2)

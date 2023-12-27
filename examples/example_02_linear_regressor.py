@@ -22,12 +22,47 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from mlpy import data
-from mlpy import regression
-from mlpy import metrics
+import matplotlib.pyplot as plt
+import numpy as np
+from mlpy.data import data_generator as dg
+from mlpy.regression import LinearRegression
+from mlpy.metrics import mse
 
-__all__ = [
-    "data",
-    "regression",
-    "metrics"
+datagen = dg.LinearRegressionData(100, 1, 5, random_state=1)
+X, y = datagen.get_data()
+
+lin_reg_pinv = LinearRegression(name="pinv-lin-reg")
+lin_reg_pinv.fit(X, y)
+
+lin_reg_gd = LinearRegression(solver="gradient_descent", name="gd-lin-reg")
+lin_reg_gd.fit(X, y)
+
+lin_reg_sgd = LinearRegression(solver="sgd", name="sgd-lin-reg")
+lin_reg_sgd.fit(X, y)
+
+
+colors = ["r", "g", "b"]
+
+ys = [
+    model.predict(X).flatten() for model in [lin_reg_pinv, lin_reg_gd, lin_reg_sgd]
 ]
+
+errors = [
+    mse(y.flatten(), y_hat) for y_hat in ys
+]
+
+labels_ = ["Pinv", "GD", "SGD"]
+labels = [
+    f"{label} - {error}" for label, error in zip(labels_, errors)
+]
+
+X = X[:, 1:].flatten()
+
+figure = plt.figure()
+plt.title("Linear Regression Test")
+plt.scatter(X, y, c="pink", s=15)
+
+for i in range(len(labels)):
+    plt.plot(X, ys[i], c=colors[i], label=labels[i])
+plt.legend()
+plt.show()

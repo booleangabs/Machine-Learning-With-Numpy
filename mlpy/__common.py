@@ -22,12 +22,30 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from mlpy import data
-from mlpy import regression
-from mlpy import metrics
 
-__all__ = [
-    "data",
-    "regression",
-    "metrics"
-]
+class BaseModel:
+    def __init__(self, name: str = "model"):
+        self.name = name
+        
+    def fit(self, *args, **kwargs):
+        raise NotImplementedError(f"Not available for {self.__class__}")
+        
+    def predict(self, *args, **kwargs):
+        raise NotImplementedError(f"Not available for {self.__class__}")
+    
+    def predict_proba(self, *args, **kwargs):
+        raise NotImplementedError(f"Not available for {self.__class__}")
+
+
+class BaseTransform:
+    def __init__(self, name: str = "transform"):
+        self.name = name
+        
+    def fit(self, *args, **kwargs):
+        raise NotImplementedError(f"Not available for {self.__class__}")
+        
+    def transform(self, *args, **kwargs):
+        raise NotImplementedError(f"Not available for {self.__class__}")
+    
+    def fit_transform(self, *args, **kwargs):
+        raise NotImplementedError(f"Not available for {self.__class__}")

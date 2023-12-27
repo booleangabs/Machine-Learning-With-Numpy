@@ -22,12 +22,4 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from mlpy import data
-from mlpy import regression
-from mlpy import metrics
-
-__all__ = [
-    "data",
-    "regression",
-    "metrics"
-]
+from .linear_regression import *

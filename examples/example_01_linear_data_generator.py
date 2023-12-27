@@ -23,10 +23,10 @@ SOFTWARE.
 """
 
 import matplotlib.pyplot as plt
-from mlpy.data import data_generator
+from mlpy.data import data_generator as dg
 
 
-datagen = data_generator.LinearRegressionData(100, 1, 5)
+datagen = dg.LinearRegressionData(100, 1, 5)
 X, y = datagen.get_data()
 weights = datagen.get_weights()
 
