@@ -9,12 +9,12 @@ Machine learning algorithms from scratch using numpy
     * For linear regression
 
 ### Setup
-[LINUX] To properly use the package, run the following commands:
+[LINUX] To properly use the package, run the following commands (assuming ```conda``` is installed):
 
 ```
-python3 -m venv mlpy
-source mlpy/bin/activate
-pip install -r requirements.txt
+conda create -n mlpy "python=3.10"
+conda activate mlpy
+conda install numpy matplotlib prettytable
 python3 setup.py install
 ```
 
