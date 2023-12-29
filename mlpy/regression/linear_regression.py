@@ -32,7 +32,7 @@ from ..__common import BaseModel
 LIN_REG_SOLVERS = ["pinv", "gradient_descent", "sgd"]
 
 
-class LinearRegression(BaseModel):
+class LinearRegressor(BaseModel):
     def __init__(self, 
                  solver: str = "pinv", 
                  name: str = "linear_regressor", 
@@ -78,7 +78,7 @@ class LinearRegression(BaseModel):
         self.weights = self.__generator.standard_normal((X_train.shape[1], 1))
         N = len(X_train)
         for i in range(self.max_iter):
-            idxs = np.random.randint(0, N, self.batch_size)
+            idxs = self.__generator.integers(0, N, self.batch_size)
             X_ = X_train[idxs]
             y_ = y_train[idxs]
             diff = (y_ - self.predict(X_))

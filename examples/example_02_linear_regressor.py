@@ -25,19 +25,19 @@ SOFTWARE.
 import matplotlib.pyplot as plt
 import numpy as np
 from mlpy.data import data_generator as dg
-from mlpy.regression import LinearRegression
+from mlpy.regression import LinearRegressor
 from mlpy.metrics import mse
 
 datagen = dg.LinearRegressionData(100, 1, 5, random_state=1)
 X, y = datagen.get_data()
 
-lin_reg_pinv = LinearRegression(name="pinv-lin-reg")
+lin_reg_pinv = LinearRegressor(name="pinv-lin-reg")
 lin_reg_pinv.fit(X, y)
 
-lin_reg_gd = LinearRegression(solver="gradient_descent", name="gd-lin-reg")
+lin_reg_gd = LinearRegressor(solver="gradient_descent", name="gd-lin-reg")
 lin_reg_gd.fit(X, y)
 
-lin_reg_sgd = LinearRegression(solver="sgd", name="sgd-lin-reg")
+lin_reg_sgd = LinearRegressor(solver="sgd", name="sgd-lin-reg")
 lin_reg_sgd.fit(X, y)
 
 
