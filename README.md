@@ -7,8 +7,9 @@ Machine learning algorithms from scratch using numpy
 - Self-contained CSV dataset loader
 - Toy dataset generator
     * For linear regression
-- Models
+- Regression Models
     - Linear Regressor (solved by Pseudoinverse, Gradient Descent and SGD)
+    - K-Nearest Neighbors Regressor (reduction options: mean, median)
 
 ### Setup
 [LINUX] To properly use the package, run the following commands (assuming ```conda``` is installed):
