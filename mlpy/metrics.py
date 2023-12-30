@@ -27,4 +27,16 @@ import numpy as np
 
 
 def mse(y_true: np.ndarray, y_pred: np.ndarray) -> float:
-    return np.mean((y_true - y_pred)**2)
+    return np.mean(np.subtract(y_true, y_pred)**2)
+
+def rmse(y_true: np.ndarray, y_pred: np.ndarray) -> float:
+    return np.sqrt(np.mean(np.subtract(y_true, y_pred)**2))
+
+def mae(y_true: np.ndarray, y_pred: np.ndarray) -> float:
+    return np.mean(np.abs(np.subtract(y_true, y_pred)))
+
+def r2_score(y_true: np.ndarray, y_pred: np.ndarray) -> float:
+    ssr = np.sum(np.subtract(y_true, y_pred)**2)
+    ym = np.mean(y_true)
+    ssm = np.sum(np.subtract(y_true, ym)**2)
+    return 1 - (ssr / ssm)
